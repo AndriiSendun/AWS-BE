@@ -3,19 +3,19 @@ module.exports.data = [
     description: "Short Product Description1",
     id: "7567ec4b-b10c-48c5-9345-fc73c48a80aa",
     price: 24,
-    title: "ProductOne",
+    title: "Storage",
   },
   {
     description: "Short Product Description7",
     id: "7567ec4b-b10c-48c5-9345-fc73c48a80a1",
     price: 15,
-    title: "ProductTitle",
+    title: "Compute",
   },
   {
     description: "Short Product Description2",
     id: "7567ec4b-b10c-48c5-9345-fc73c48a80a3",
     price: 23,
-    title: "Product",
+    title: "Database",
   },
   {
     description: "Short Product Description4",
