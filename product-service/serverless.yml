@@ -13,3 +13,10 @@ functions:
       - httpApi:
           path: /products
           method: get
+
+  getProductsById:
+    handler: handler.getProductsById
+    events:
+      - httpApi:
+          path: /products/{id}
+          method: get
