@@ -6,6 +6,10 @@ provider:
   runtime: nodejs18.x
   region: eu-west-1
 
+package:
+  patterns:
+    - '!**/*.test.*'
+
 functions:
   getProductsList:
     handler: handler.getProductsList
