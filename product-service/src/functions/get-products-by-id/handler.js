@@ -1,7 +1,7 @@
-const { products } = require('../../mocks/products');
-const { corsHeaders } = require('../../constants/headers');
+import { products } from '../../mocks/products';
+import { corsHeaders } from'../../constants/headers';
 
-module.exports.getProductsById = async (event) => {
+export const getProductsById = async (event) => {
   const product = products.find(({ id }) => id === event.pathParameters.id);
 
   if(!product) {

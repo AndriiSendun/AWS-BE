@@ -1,6 +1,6 @@
-const { corsHeaders } = require('../../constants/headers');
-const { products } = require('../../mocks/products');
-const { getProductsList } = require('./handler');
+import { corsHeaders } from'../../constants/headers';
+import { products } from '../../mocks/products';
+import { getProductsList } from './handler';
 
 describe('getProductsList', () => {
   it('should return products', async () => {

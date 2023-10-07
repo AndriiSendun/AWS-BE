@@ -1,5 +1,5 @@
-const { corsHeaders } = require('../../constants/headers');
-const { getProductsById } = require('./handler');
+import { corsHeaders } from'../../constants/headers';
+import { getProductsById } from './handler';
 
 describe('getProductsById', () => {
   it('should found product', async () => {

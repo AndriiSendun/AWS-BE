@@ -6,20 +6,25 @@ provider:
   runtime: nodejs18.x
   region: eu-west-1
 
+plugins:
+  - serverless-webpack
+  - serverless-offline
+
 package:
+  individually: true
   patterns:
     - '!**/*.test.*'
 
 functions:
   getProductsList:
-    handler: handler.getProductsList
+    handler: ./src/handler.getProductsList
     events:
       - httpApi:
           path: /products
           method: get
 
   getProductsById:
-    handler: handler.getProductsById
+    handler: ./src/handler.getProductsById
     events:
       - httpApi:
           path: /products/{id}
