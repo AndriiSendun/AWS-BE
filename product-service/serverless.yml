@@ -5,6 +5,8 @@ provider:
   name: aws
   runtime: nodejs18.x
   region: eu-west-1
+  iam:
+    role: arn:aws:iam::295974408458:role/DynamoDBLambdaAccessRole
 
 plugins:
   - serverless-webpack
