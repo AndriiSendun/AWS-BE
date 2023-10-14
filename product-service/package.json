@@ -1,7 +1,8 @@
 {
   "name": "product-service",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "fill:db": "aws dynamodb batch-write-item --request-items file://src/db/data.json"
   },
   "dependencies": {
     "jest": "29.7.0"

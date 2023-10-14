@@ -1,0 +1,42 @@
+{
+  "products": [
+    {
+      "PutRequest": {
+        "Item": {
+          "id": {"S": "7567ec4b-b10c-48c5-9345-fc73c48a80aa"},
+          "price": {"N": "24"},
+          "description": {"S": "Short Product Description1"},
+          "title": {"S": "Storage"}
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": {"S": "7567ec4b-b10c-48c5-9345-fc73c48a80a1"},
+          "price": {"N": "15"},
+          "description": {"S": "Short Product Description7"},
+          "title": {"S": "Compute"}
+        }
+      }
+    }
+  ],
+  "stocks": [
+    {
+      "PutRequest": {
+        "Item": {
+          "product_id": {"S": "7567ec4b-b10c-48c5-9345-fc73c48a80aa"},
+          "count": {"N": "3"}
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "product_id": {"S": "7567ec4b-b10c-48c5-9345-fc73c48a80a1"},
+          "count": {"N": "7"}
+        }
+      }
+    }
+  ]
+}
