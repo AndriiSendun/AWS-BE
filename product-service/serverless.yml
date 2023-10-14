@@ -17,9 +17,16 @@ package:
   patterns:
     - '!**/*.test.*'
 
+custom:
+  productsTable: products
+  stocksTable: stocks
+
 functions:
   getProductsList:
     handler: ./src/handler.getProductsList
+    environment:
+      productsTable: ${self:custom.productsTable}
+      stocksTable: ${self:custom.stocksTable}
     events:
       - httpApi:
           path: /products
@@ -27,6 +34,9 @@ functions:
 
   getProductsById:
     handler: ./src/handler.getProductsById
+    environment:
+      productsTable: ${self:custom.productsTable}
+      stocksTable: ${self:custom.stocksTable}
     events:
       - httpApi:
           path: /products/{id}
@@ -34,7 +44,40 @@ functions:
 
   createProduct:
     handler: ./src/handler.createProduct
+    environment:
+      productsTable: ${self:custom.productsTable}
+      stocksTable: ${self:custom.stocksTable}
     events:
       - httpApi:
           path: /products
           method: post
+
+resources:
+  Resources:
+    products:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.productsTable}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+
+    stocks:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.stocksTable}
+        AttributeDefinitions:
+          - AttributeName: product_id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: product_id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
