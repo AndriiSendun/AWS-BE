@@ -1,7 +1,9 @@
 import { corsHeaders } from "../../constants/headers";
 import { scanProducts } from "../../services/product-query.service";
 
-export const getProductsList = async () => {
+export const getProductsList = async (event) => {
+  console.log(event, 'event');
+
   try {
     const products = await scanProducts();
 
