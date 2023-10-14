@@ -6,10 +6,11 @@
     "fill:db": "aws dynamodb batch-write-item --request-items file://src/db/data.json"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.428.0",
-    "@aws-sdk/lib-dynamodb": "^3.428.0",
-    "aws-crt": "^1.18.0",
-    "jest": "29.7.0"
+    "@aws-sdk/client-dynamodb": "3.428.0",
+    "@aws-sdk/lib-dynamodb": "3.428.0",
+    "aws-crt": "1.18.0",
+    "jest": "29.7.0",
+    "uuid": "9.0.1"
   },
   "devDependencies": {
     "@babel/preset-env": "7.22.20",

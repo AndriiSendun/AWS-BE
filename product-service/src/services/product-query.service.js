@@ -34,10 +34,10 @@ export const scanProducts = async () => {
 
 export const queryProductById = async (id) => {
   const product = await getProduct(id);
-  const stack = await getStock(id);
+  const stock = await getStock(id);
 
   return {
     ...product,
-    ...stack
+    ...stock
   }
 }
