@@ -5,6 +5,8 @@ provider:
   name: aws
   runtime: nodejs18.x
   region: eu-west-1
+  iam:
+    role: arn:aws:iam::295974408458:role/DynamoDBLambdaAccessRole
 
 plugins:
   - serverless-webpack
@@ -15,9 +17,16 @@ package:
   patterns:
     - '!**/*.test.*'
 
+custom:
+  productsTable: products
+  stocksTable: stocks
+
 functions:
   getProductsList:
     handler: ./src/handler.getProductsList
+    environment:
+      productsTable: ${self:custom.productsTable}
+      stocksTable: ${self:custom.stocksTable}
     events:
       - httpApi:
           path: /products
@@ -25,7 +34,50 @@ functions:
 
   getProductsById:
     handler: ./src/handler.getProductsById
+    environment:
+      productsTable: ${self:custom.productsTable}
+      stocksTable: ${self:custom.stocksTable}
     events:
       - httpApi:
           path: /products/{id}
           method: get
+
+  createProduct:
+    handler: ./src/handler.createProduct
+    environment:
+      productsTable: ${self:custom.productsTable}
+      stocksTable: ${self:custom.stocksTable}
+    events:
+      - httpApi:
+          path: /products
+          method: post
+
+resources:
+  Resources:
+    products:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.productsTable}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+
+    stocks:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.stocksTable}
+        AttributeDefinitions:
+          - AttributeName: product_id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: product_id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5

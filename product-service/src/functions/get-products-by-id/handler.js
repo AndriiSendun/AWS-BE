@@ -1,8 +1,10 @@
-import { products } from '../../mocks/products';
 import { corsHeaders } from'../../constants/headers';
+import { queryProductById } from '../../services/product-query.service';
 
 export const getProductsById = async (event) => {
-  const product = products.find(({ id }) => id === event.pathParameters.id);
+  console.log(event, 'event');
+
+  const product = await queryProductById(event.pathParameters.id);
 
   if(!product) {
     return {
