@@ -1,0 +1,35 @@
+service: import-service
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: eu-west-1
+  iam:
+    role: arn:aws:iam::295974408458:role/S3LambdaFullAccess
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
+
+package:
+  individually: true
+  patterns:
+    - '!**/*.test.*'
+
+functions:
+  importProductsFile:
+    handler: ./src/handler.importProductsFile
+    events:
+      - httpApi:
+          path: /import
+          method: get
+  importFileParser:
+      handler: ./src/handler.importFileParser
+      events:
+        - s3:
+            bucket: uploaded-aws-shop
+            event: s3:ObjectCreated:*
+            rules:
+              - prefix: uploaded/
+            existing: true
