@@ -4,4 +4,4 @@ export const sqsClient = new SQSClient({
   region: process.env.REGION,
 });
 
-export const CATALOG_SQS_URL = `https://sqs.${ process.env.REGION }.amazonaws.com/${ process.env.ACCOUNT_ID }/catalogItemsQueue`;
+export const CATALOG_SQS_URL = `https://sqs.eu-west-1.amazonaws.com/295974408458/catalogsQueue`;

@@ -22,10 +22,8 @@ export const parseCSVFile = (csvFile) => {
       .pipe(stripBom())
       .pipe(csv({ separator: ';' }))
       .on('data', (product) => {
-        const sqsPromise = sendProductToSqs(product);
-        
         console.log(product, 'product');
-        result.push(sqsPromise);
+        result.push(product);
       })
       .on('error', (err) =>{
         console.log(err, 'filed to parse file');

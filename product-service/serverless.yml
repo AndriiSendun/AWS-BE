@@ -55,17 +55,16 @@ functions:
           path: /products
           method: post
 
-  catalogBatchProcess:
+  catalogButchProcess:
     handler: ./src/handler.catalogBatchProcess
     role: arn:aws:iam::295974408458:role/LambdaSQSDynamoDBFUllAccess
     events:
       - sqs:
           arn:
             Fn::GetAtt:
-              - catalogItemsQueue
+              - catalogsQueue
               - Arn
           batchSize: 1
-
 resources:
   Resources:
     products:
@@ -95,11 +94,10 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 5
           WriteCapacityUnits: 5
-
-    catalogItemsQueue:
+    catalogsQueue:
       Type: "AWS::SQS::Queue"
       Properties:
-        QueueName: "catalogItemsQueue"
+        QueueName: "catalogsQueue"
 
     createProductTopic:
       Type: AWS::SNS::Topic
