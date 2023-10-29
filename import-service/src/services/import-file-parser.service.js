@@ -1,9 +1,10 @@
 import { GetObjectCommand } from '@aws-sdk/client-s3';
 import csv from 'csv-parser';
+import stripBom from 'strip-bom-stream';
 import { client, BUCKET } from "../constants/bucket"
 import { sendProductToSqs } from './product-sqs.service';
 
-const getCSVFile = (key) => {
+export const getCSVFile = (key) => {
   const command = new GetObjectCommand({
     Bucket: BUCKET,
     Key: key
@@ -12,25 +13,29 @@ const getCSVFile = (key) => {
   return client.send(command);
 }
 
-const parseCSVFile = (csvFile) => {
+export const parseCSVFile = (csvFile) => {
+  console.log('start parsing csv file')
   return new Promise((resolve, reject) => {
     const result = [];
 
     csvFile.Body
+      .pipe(stripBom())
       .pipe(csv({ separator: ';' }))
       .on('data', (product) => {
-        console.log(product, 'product')
-        sendProductToSqs(product)
+        const sqsPromise = sendProductToSqs(product);
+        
+        console.log(product, 'product');
+        result.push(sqsPromise);
       })
-      .on('error', reject)
+      .on('error', (err) =>{
+        console.log(err, 'filed to parse file');
+
+        reject(err);
+      })
       .on('end', () => {
+        console.log('end parsing');
+
         resolve(result);
       });
   });
-}
-
-export const parseCSVFiles = (records) => {
-  const files = records.map((record) => getCSVFile(record.s3.object.key).then(parseCSVFile));
-
-  return Promise.all(files)
-}
+};
