@@ -7,6 +7,9 @@ provider:
   region: eu-west-1
   iam:
     role: arn:aws:iam::295974408458:role/DynamoDBLambdaAccessRole
+  environment:
+    ACCOUNT_ID: ${aws:accountId}
+    REGION: ${aws:region}
 
 plugins:
   - serverless-webpack
@@ -52,6 +55,17 @@ functions:
           path: /products
           method: post
 
+  catalogBatchProcess:
+    handler: ./src/handler.catalogBatchProcess
+    role: arn:aws:iam::295974408458:role/LambdaSQSDynamoDBFUllAccess
+    events:
+      - sqs:
+          arn:
+            Fn::GetAtt:
+              - catalogItemsQueue
+              - Arn
+          batchSize: 5
+
 resources:
   Resources:
     products:
@@ -81,3 +95,8 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 5
           WriteCapacityUnits: 5
+
+    catalogItemsQueue:
+      Type: "AWS::SQS::Queue"
+      Properties:
+        QueueName: "catalogItemsQueue"

@@ -1,6 +1,7 @@
 import { GetObjectCommand } from '@aws-sdk/client-s3';
 import csv from 'csv-parser';
 import { client, BUCKET } from "../constants/bucket"
+import { sendProductToSqs } from './product-sqs.service';
 
 const getCSVFile = (key) => {
   const command = new GetObjectCommand({
@@ -17,11 +18,12 @@ const parseCSVFile = (csvFile) => {
 
     csvFile.Body
       .pipe(csv({ separator: ';' }))
-      .on('data', (data) => result.push(data))
+      .on('data', (product) => {
+        console.log(product, 'product')
+        sendProductToSqs(product)
+      })
       .on('error', reject)
       .on('end', () => {
-        console.log(result);
-
         resolve(result);
       });
   });
