@@ -30,7 +30,13 @@ export const insertProduct = async (productBody) => {
     ],
   });
 
-  await docClient.send(transactCommand);
+  try {
+    await docClient.send(transactCommand);
+    console.log('product created');
+    return { ...productBody, id };
 
-  return { ...productBody, id };
+  } catch(err) {
+    console.log(err, 'failed to create product');
+    throw err
+  }
 };

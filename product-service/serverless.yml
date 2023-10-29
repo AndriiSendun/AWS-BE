@@ -64,7 +64,7 @@ functions:
             Fn::GetAtt:
               - catalogItemsQueue
               - Arn
-          batchSize: 5
+          batchSize: 1
 
 resources:
   Resources:
@@ -100,3 +100,16 @@ resources:
       Type: "AWS::SQS::Queue"
       Properties:
         QueueName: "catalogItemsQueue"
+
+    createProductTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: createProductTopic
+
+    createProductTopicSubscription:
+      Type: AWS::SNS::Subscription
+      Properties:
+        Protocol: email
+        TopicArn:
+          Ref: createProductTopic
+        Endpoint: andrii.public.developer@gmail.com
