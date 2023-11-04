@@ -5,11 +5,14 @@ provider:
   name: aws
   runtime: nodejs18.x
   region: eu-west-1
-  iam:
-    role: arn:aws:iam::295974408458:role/S3LambdaFullAccess
   environment:
     ACCOUNT_ID: ${aws:accountId}
     REGION: ${aws:region}
+  httpApi:
+    authorizers:
+      customAuthorizer:
+        type: request
+        functionArn: arn:aws:lambda:eu-west-1:295974408458:function:authorization-service-dev-basicAuthorization
 
 plugins:
   - serverless-webpack
@@ -23,10 +26,14 @@ package:
 functions:
   importProductsFile:
     handler: ./src/handler.importProductsFile
+    role: arn:aws:iam::295974408458:role/DynamoDBLambdaAccessRole
     events:
       - httpApi:
           path: /import
           method: get
+          authorizer:
+            name: customAuthorizer
+
   importFileParser:
       handler: ./src/handler.importFileParser
       role: arn:aws:iam::295974408458:role/LambdaSQSDynamoDBFUllAccess
