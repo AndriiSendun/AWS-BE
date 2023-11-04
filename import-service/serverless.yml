@@ -7,6 +7,9 @@ provider:
   region: eu-west-1
   iam:
     role: arn:aws:iam::295974408458:role/S3LambdaFullAccess
+  environment:
+    ACCOUNT_ID: ${aws:accountId}
+    REGION: ${aws:region}
 
 plugins:
   - serverless-webpack
@@ -26,6 +29,7 @@ functions:
           method: get
   importFileParser:
       handler: ./src/handler.importFileParser
+      role: arn:aws:iam::295974408458:role/LambdaSQSDynamoDBFUllAccess
       events:
         - s3:
             bucket: uploaded-aws-shop

@@ -7,6 +7,9 @@ provider:
   region: eu-west-1
   iam:
     role: arn:aws:iam::295974408458:role/DynamoDBLambdaAccessRole
+  environment:
+    ACCOUNT_ID: ${aws:accountId}
+    REGION: ${aws:region}
 
 plugins:
   - serverless-webpack
@@ -52,6 +55,16 @@ functions:
           path: /products
           method: post
 
+  catalogButchProcess:
+    handler: ./src/handler.catalogBatchProcess
+    role: arn:aws:iam::295974408458:role/LambdaSQSDynamoDBFUllAccess
+    events:
+      - sqs:
+          arn:
+            Fn::GetAtt:
+              - catalogsQueue
+              - Arn
+          batchSize: 1
 resources:
   Resources:
     products:
@@ -81,3 +94,20 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 5
           WriteCapacityUnits: 5
+    catalogsQueue:
+      Type: "AWS::SQS::Queue"
+      Properties:
+        QueueName: "catalogsQueue"
+
+    createProductTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: createProductTopic
+
+    createProductTopicSubscription:
+      Type: AWS::SNS::Subscription
+      Properties:
+        Protocol: email
+        TopicArn:
+          Ref: createProductTopic
+        Endpoint: andrii.public.developer@gmail.com
