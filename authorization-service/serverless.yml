@@ -1,0 +1,27 @@
+service: authorization-service
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: eu-west-1
+  iam:
+    role: arn:aws:iam::295974408458:role/AWSLambdaBasicExecutionRole
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
+  - serverless-dotenv-plugin
+
+package:
+  individually: true
+  patterns:
+    - '!**/*.test.*'
+
+functions:
+  basicAuthorization:
+    handler: ./src/handler.basicAuthorization
+
+custom:
+  dotenv:
+    dotenvParser: ./src/services/dotenv-file-parser.js
